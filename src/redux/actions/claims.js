@@ -1,13 +1,12 @@
 // @flow
 import * as ACTIONS from 'constants/action_types';
 import Lbry from 'lbry';
-import { normalizeURI, parseURI } from 'lbryURI';
+import { normalizeURI } from 'lbryURI';
 import { doToast } from 'redux/actions/notifications';
 import { selectMyClaimsRaw, selectResolvingUris, selectClaimsByUri } from 'redux/selectors/claims';
 import { doFetchTransactions } from 'redux/actions/wallet';
 import { selectSupportsByOutpoint } from 'redux/selectors/wallet';
 import { creditsToString } from 'util/formatCredits';
-import { batchActions } from 'util/batchActions';
 
 export function doResolveUris(uris: Array<string>, returnCachedClaims: boolean = false) {
   return (dispatch: Dispatch, getState: GetState) => {
