@@ -2758,8 +2758,6 @@ const selectTakeOverAmount = reselect.createSelector(selectState$5, selectMyClai
   return null;
 });
 
-//
-
 var _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 const doResetThumbnailStatus = () => dispatch => {
@@ -2919,7 +2917,7 @@ const doPrepareEdit = (claim, uri, fileInfo) => dispatch => {
     nsfw: isClaimNsfw(claim)
   };
 
-  // Make sure custom liscence's are mapped properly
+  // Make sure custom licenses are mapped properly
   // If the license isn't one of the standard licenses, map the custom license and description/url
   if (!CC_LICENSES.some(({ value }) => value === license)) {
     if (!license || license === NONE || license === PUBLIC_DOMAIN) {
@@ -2978,7 +2976,6 @@ const doPublish = (success, fail) => (dispatch, getState) => {
     fee,
     uri,
     nsfw,
-    // claim,
     tags,
     locations
   } = publishData;
@@ -3006,7 +3003,6 @@ const doPublish = (success, fail) => (dispatch, getState) => {
     languages: [language],
     tags: tags && tags.map(tag => tag.name),
     thumbnail_url: thumbnail
-
   };
   // Temporary solution to keep the same publish flow with the new tags api
   // Eventually we will allow users to enter their own tags on publish
@@ -3073,7 +3069,6 @@ const doCheckPendingPublishes = onConfirmed => (dispatch, getState) => {
         // If it's confirmed, check if it was pending previously
         if (claim.confirmations > 0 && pendingById[claim.claim_id]) {
           delete pendingById[claim.claim_id];
-          // TODO fix notifications - pass as param as well?
           if (onConfirmed) {
             onConfirmed(claim);
           }
