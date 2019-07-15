@@ -88,12 +88,14 @@ export const makeSelectClaimForUri = (uri: string) =>
       // Check if a claim is pending first
       // It won't be in claimsByUri because resolving it will return nothing
 
+      let valid;
       let claimId;
       try {
         ({ claimId } = parseURI(uri));
+        valid = true;
       } catch (e) {}
 
-      if (claimId) {
+      if (valid) {
         const pendingClaim = pendingById[claimId];
 
         if (pendingClaim) {
@@ -501,7 +503,7 @@ export const selectFetchingClaimSearch = createSelector(
 
 export const selectLastClaimSearchUris = createSelector(
   selectState,
-  state => state.lastClaimSearchUris
+  state => state.claimSearchSearchByQuery || {}
 );
 
 export const makeSelectShortUrlForUri = (uri: string) =>

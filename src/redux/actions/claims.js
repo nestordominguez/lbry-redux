@@ -299,7 +299,10 @@ export function doFetchChannelListMine() {
   };
 }
 
-export function doClaimSearch(options: { page_size?: number, page?: number } = {}) {
+export function doClaimSearch(options: { page_size?: number, page?: number } = {}, timeSort) {
+  const { page: optionToIgnoreForQuery, release_time, ...rest } = options;
+  const query = JSON.stringify(rest) + timeSort;
+
   return (dispatch: Dispatch) => {
     dispatch({
       type: ACTIONS.CLAIM_SEARCH_STARTED,
@@ -315,7 +318,7 @@ export function doClaimSearch(options: { page_size?: number, page?: number } = {
 
       dispatch({
         type: ACTIONS.CLAIM_SEARCH_COMPLETED,
-        data: { resolveInfo, uris, append: options.page && options.page !== 1 },
+        data: { resolveInfo, uris, query, append: options.page && options.page !== 1 },
       });
     };
 

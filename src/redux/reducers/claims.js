@@ -21,7 +21,9 @@ type State = {
   abandoningById: { [string]: boolean },
   fetchingChannelClaims: { [string]: number },
   fetchingMyChannels: boolean,
-  lastClaimSearchUris: Array<string>,
+  claimSearchSearchByQuery: {
+    [string]: Array<string>,
+  },
   claimsByChannel: {
     [string]: {
       all: Array<string>,
@@ -291,19 +293,22 @@ reducers[ACTIONS.CLAIM_SEARCH_STARTED] = (state: State): State => {
   });
 };
 reducers[ACTIONS.CLAIM_SEARCH_COMPLETED] = (state: State, action: any): State => {
-  const { lastClaimSearchUris } = state;
+  const { claimSearchSearchByQuery } = state;
+  const { uris, query, append } = action.data;
 
-  let newClaimSearchUris = [];
-  if (action.data.append) {
-    newClaimSearchUris = lastClaimSearchUris.concat(action.data.uris);
+  let newClaimSearch = { ...claimSearchSearchByQuery };
+  if (!uris) {
+    newClaimSearch[query] = null;
+  } else if (append && newClaimSearch[query]) {
+    newClaimSearch[query] = newClaimSearch[query].concat(uris);
   } else {
-    newClaimSearchUris = action.data.uris;
+    newClaimSearch[query] = uris;
   }
 
   return {
     ...handleClaimAction(state, action),
     fetchingClaimSearch: false,
-    lastClaimSearchUris: newClaimSearchUris,
+    claimSearchSearchByQuery: newClaimSearch,
   };
 };
 reducers[ACTIONS.CLAIM_SEARCH_FAILED] = (state: State): State => {
